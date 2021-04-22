@@ -15,8 +15,6 @@ public class CadastroDeProduto {
 
 	public static void main(String[] args) {
 		cadastrar();
-		buscarPorID();
-
 	}
 
 	private static void buscarPorID() {
