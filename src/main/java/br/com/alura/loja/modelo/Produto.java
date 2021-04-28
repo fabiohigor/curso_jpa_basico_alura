@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "produtos")
-@NamedQuery(name = "Produto.buscarNomeDaCategoriaNamedQuery", query = "SELECT p FROM Produto p WHERE p.categoria.id.nome = :nome")
+@NamedQuery(name = "Produto.buscarNomeDaCategoriaNamedQuery", query = "SELECT p FROM Produto p WHERE p.categoria.nome = :nome")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // serve pra que todas as tabelas que herdam sejam criadas no
 														// mesmo lugar
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) //se ficasse assim, ia criar uma tabela para cada uma que herda, porem, com um campo identificando quem era a tabela filha no produto
