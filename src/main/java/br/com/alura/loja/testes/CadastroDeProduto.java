@@ -1,6 +1,7 @@
 package br.com.alura.loja.testes;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,10 @@ public class CadastroDeProduto {
 
 	public static void main(String[] args) {
 		cadastrar();
+//		buscarPorID();
+//		buscarPorParametros();
+		buscarPorParametrosCriteria();
+		
 	}
 
 	private static void buscarPorID() {
@@ -23,7 +28,9 @@ public class CadastroDeProduto {
 		ProdutoDao produtoDAO = new ProdutoDao(em);
 
 		Produto pId = produtoDAO.buscarPorId(1l);
+		System.out.println("Busca por ID: " + pId.getNome());
 		System.out.println("Busca por ID: " + pId.toString());
+		
 
 		em.getTransaction().commit();
 		em.close();
@@ -64,6 +71,10 @@ public class CadastroDeProduto {
 		List<Produto> pTodos = produtoDAO.buscarNomeDaCategoria("CELULARES");
 		pTodos.forEach(p -> System.out.println(p.toString()));
 
+		System.out.println("Com NamedQuery");
+		pTodos = produtoDAO.buscarNomeDaCategoriaNamedQuery("CELULARES");
+		pTodos.forEach(p -> System.out.println(p.toString()));
+
 		em.getTransaction().commit();
 		em.close();
 
@@ -80,6 +91,32 @@ public class CadastroDeProduto {
 		em.close();
 
 	}
+	private static void buscarPorParametros() {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		ProdutoDao produtoDAO = new ProdutoDao(em);
+
+		List<Produto> produtos = produtoDAO.buscarPorParametros(null,null,LocalDate.now());
+		produtos.forEach(p -> System.out.println(p.toString()));
+		em.getTransaction().commit();
+		em.close();
+
+	}
+	
+	private static void buscarPorParametrosCriteria() {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		ProdutoDao produtoDAO = new ProdutoDao(em);
+
+		List<Produto> produtos = produtoDAO.buscarPorParametrosCriteria(null,null,LocalDate.now());
+		produtos.forEach(p -> System.out.println("**--**"+p.toString()));
+		em.getTransaction().commit();
+		em.close();
+
+	}
+	
+	
+	
 
 	private static void atualizarProduto() {
 
