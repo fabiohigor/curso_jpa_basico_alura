@@ -4,14 +4,22 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "produtos")
+@NamedQuery(name = "Produto.buscarNomeDaCategoriaNamedQuery", query = "SELECT p FROM Produto p WHERE p.categoria.id.nome = :nome")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // serve pra que todas as tabelas que herdam sejam criadas no
+														// mesmo lugar
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) //se ficasse assim, ia criar uma tabela para cada uma que herda, porem, com um campo identificando quem era a tabela filha no produto
 public class Produto {
 
 	@Id
@@ -21,13 +29,13 @@ public class Produto {
 	private String descricao;
 	private BigDecimal preco;
 	private LocalDate dataCadastro = LocalDate.now();
-	
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Categoria categoria;
-	
+
 	public Produto() {
 	}
-	
+
 	public Produto(String nome, String descricao, BigDecimal preco, Categoria categoria) {
 		this.nome = nome;
 		this.descricao = descricao;
@@ -89,6 +97,4 @@ public class Produto {
 				+ ", dataCadastro=" + dataCadastro + ", categoria=" + categoria + "]";
 	}
 
-	
-	
 }
